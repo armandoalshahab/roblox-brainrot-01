@@ -29,6 +29,7 @@ local interactCallback = nil
 local lockCallback = nil
 local upgradeCallback = nil
 local rebirthCallback = nil
+local buyByCharIdCallback = nil
 
 function ClientUI.setInteractCallback(fn)
 	interactCallback = fn
@@ -44,6 +45,10 @@ end
 
 function ClientUI.setRebirthCallback(fn)
 	rebirthCallback = fn
+end
+
+function ClientUI.setBuyByCharIdCallback(fn)
+	buyByCharIdCallback = fn
 end
 
 local function makeLabel(parent, name, text, size, position, anchor)
@@ -88,7 +93,7 @@ end
 local function buildShop()
 	shopFrame = Instance.new("Frame")
 	shopFrame.Name = "ShopFrame"
-	shopFrame.Size = UDim2.fromOffset(440, 430)
+	shopFrame.Size = UDim2.fromOffset(520, 430)
 	shopFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 	shopFrame.Position = UDim2.fromScale(0.5, 0.5)
 	shopFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
@@ -97,7 +102,7 @@ local function buildShop()
 	shopFrame.Parent = gui
 
 	local title = makeLabel(shopFrame, "ShopTitle", "BRAINROT SHOP - cari di conveyor!", 22, UDim2.new(0.5, 0, 0, 8), Vector2.new(0.5, 0))
-	title.Size = UDim2.fromOffset(420, 30)
+	title.Size = UDim2.fromOffset(500, 30)
 
 	local list = Instance.new("ScrollingFrame")
 	list.Name = "ShopList"
@@ -111,23 +116,40 @@ local function buildShop()
 
 	for i, char in ipairs(BrainrotData.Characters) do
 		local rarity = BrainrotData.Rarities[char.Rarity]
-		local row = Instance.new("TextLabel")
+		local row = Instance.new("Frame")
 		row.Name = "ShopRow" .. char.Id
 		row.Size = UDim2.new(1, 0, 0, 30)
 		row.Position = UDim2.new(0, 0, 0, (i - 1) * 34)
 		row.BackgroundColor3 = Color3.fromRGB(50, 50, 70)
 		row.BorderSizePixel = 0
-		row.Font = Enum.Font.SourceSansBold
-		row.TextSize = 16
-		row.TextXAlignment = Enum.TextXAlignment.Left
-		row.TextColor3 = Color3.fromRGB(255, 255, 255)
-		row.Text = "  " .. char.Name .. "  |  " .. char.Rarity .. "  |  $" .. tostring(char.Cost) .. "  |  $" .. tostring(char.Income) .. "/s"
 		row.Parent = list
+		local info = Instance.new("TextLabel")
+		info.Name = "ShopInfo"
+		info.Size = UDim2.new(1, -132, 1, 0)
+		info.Position = UDim2.new(0, 6, 0, 0)
+		info.BackgroundTransparency = 1
+		info.Font = Enum.Font.SourceSansBold
+		info.TextSize = 16
+		info.TextXAlignment = Enum.TextXAlignment.Left
+		info.TextColor3 = Color3.fromRGB(255, 255, 255)
+		info.Text = char.Name .. "  |  " .. char.Rarity .. "  |  $" .. tostring(char.Cost) .. "  |  $" .. tostring(char.Income) .. "/s"
+		info.Parent = row
 		local strip = Instance.new("Frame")
 		strip.Size = UDim2.new(0, 6, 1, 0)
 		strip.BackgroundColor3 = rarity.Color
 		strip.BorderSizePixel = 0
 		strip.Parent = row
+		-- Real BELI button: buys a brainrot of this character ONLY if one is
+		-- riding the conveyor right now (same remote as the E key). If none
+		-- is on the belt, the callback shows an error toast instead.
+		local buy = makeButton(row, "Buy" .. char.Id, "BELI $" .. tostring(char.Cost), UDim2.fromOffset(116, 24), UDim2.new(1, -8, 0.5, 0), Vector2.new(1, 0.5))
+		buy.BackgroundColor3 = Color3.fromRGB(30, 130, 60)
+		buy.TextSize = 16
+		buy.MouseButton1Click:Connect(function()
+			if buyByCharIdCallback then
+				buyByCharIdCallback(char.Id)
+			end
+		end)
 	end
 
 	local close = makeButton(shopFrame, "CloseShop", "TUTUP", UDim2.fromOffset(90, 34), UDim2.new(1, -8, 0, 8), Vector2.new(1, 0))

@@ -134,6 +134,25 @@ ClientUI.setRebirthCallback(function()
 	Rebirth:FireServer()
 end)
 
+-- Shop BELI button: buy a brainrot of this character, but ONLY if one is
+-- riding the conveyor right now. The shop never spawns or grants anything;
+-- it just fires the same BuyBrainrot remote the E key uses, and the server
+-- still checks state, cash and free slots (its toasts report the outcome).
+ClientUI.setBuyByCharIdCallback(function(charId)
+	local folder = workspace:FindFirstChild("BrainrotModels")
+	if folder then
+		for _, model in ipairs(folder:GetChildren()) do
+			if model:IsA("Model") and model:GetAttribute("State") == "conveyor" and model:GetAttribute("CharId") == charId then
+				BuyBrainrot:FireServer(model:GetAttribute("BrainrotId"))
+				return
+			end
+		end
+	end
+	local char = BrainrotData.getCharacter(charId)
+	local displayName = char and char.Name or charId
+	ClientUI.showToast("Lagi nggak ada " .. displayName .. " di conveyor, tunggu bentar!", "error")
+end)
+
 UpdateHUD.OnClientEvent:Connect(function(data)
 	ClientUI.updateHUD(data)
 end)
@@ -164,6 +183,6 @@ RunService.RenderStepped:Connect(function()
 	if currentTarget then
 		ClientUI.setHint(currentTarget.Label)
 	else
-		ClientUI.setHint("[E] Beli / Curi  -  [L] Kunci Base  -  Conveyor di selatan, base kamu di utara!")
+		ClientUI.setHint("[E] Beli / Curi  -  [L] Kunci Base  -  Conveyor di depan spawn, jalan lurus ke depan!")
 	end
 end)
