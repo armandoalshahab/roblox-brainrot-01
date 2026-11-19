@@ -5,9 +5,12 @@ local BrainrotData = require(game:GetService("ReplicatedStorage").Shared.Brainro
 local Config = require(game:GetService("ReplicatedStorage").Shared.Config)
 local StateService = require(script.Parent.StateService)
 local BaseService = require(script.Parent.BaseService)
--- Circular with SpawnerService (it calls buyBrainrotFromConveyor from its
--- click handler): safe because both sides only call each other at run time,
--- never while loading.
+-- One-way dependency only: EconomyService reads SpawnerService.ConveyorModels
+-- (to take a bought brainrot off the belt). SpawnerService never requires
+-- this module back -- its click handler calls the buy function init.server
+-- injects as SpawnerService.BuyHandler. (A top-level require in both
+-- directions broke the whole game at boot: Roblox hands back a half-built
+-- table or errors the load, so init.server died before creating remotes.)
 local SpawnerService = require(script.Parent.SpawnerService)
 
 local EconomyService = {}

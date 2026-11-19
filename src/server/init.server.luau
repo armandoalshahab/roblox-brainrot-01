@@ -45,6 +45,10 @@ StealService.Notify = Notify
 EventService.Notify = Notify
 EventService.StormWarning = StormWarning
 
+-- Break the EconomyService <-> SpawnerService require cycle: the spawner
+-- never requires the economy module; init hands it the buy function instead.
+SpawnerService.BuyHandler = EconomyService.buyBrainrotFromConveyor
+
 -- E near a conveyor brainrot buys it; E near a rival base brainrot steals it;
 -- E near a thief carrying your brainrot slaps them. The client picks which.
 BuyBrainrot.OnServerEvent:Connect(function(player, modelId)

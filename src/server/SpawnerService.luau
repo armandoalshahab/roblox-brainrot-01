@@ -6,12 +6,15 @@ local BrainrotData = require(game:GetService("ReplicatedStorage").Shared.Brainro
 local Config = require(game:GetService("ReplicatedStorage").Shared.Config)
 local StateService = require(script.Parent.StateService)
 local ModelFactory = require(script.Parent.ModelFactory)
-local EconomyService = require(script.Parent.EconomyService)
 
 local SpawnerService = {}
 
 SpawnerService.ConveyorModels = {} -- modelId -> record, for the slide loop
 SpawnerService.Running = false
+-- Set by init.server: the buy function (EconomyService.buyBrainrotFromConveyor).
+-- Kept as an injected callback so this module never requires EconomyService
+-- back -- that top-level circular require broke the whole game at boot.
+SpawnerService.BuyHandler = nil
 
 local function getConveyorCFrame(x)
 	return CFrame.new(x, Config.ConveyorY, Config.ConveyorZ)
@@ -45,7 +48,10 @@ function SpawnerService.spawnBrainrotOnConveyor()
 	local click = model.PrimaryPart:FindFirstChild("BuyClick")
 	if click then
 		click.MouseClick:Connect(function(player)
-			EconomyService.buyBrainrotFromConveyor(player, modelId)
+			local buy = SpawnerService.BuyHandler
+			if buy then
+				buy(player, modelId)
+			end
 		end)
 	end
 	return record
