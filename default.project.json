@@ -1,10 +1,15 @@
 {
-  "name": "house-dodge",
+  "name": "brainrot-base-rush",
   "tree": {
     "$className": "DataModel",
     "Players": {
       "$properties": {
-        "CharacterAutoLoads": false
+        "CharacterAutoLoads": true
+      }
+    },
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
       }
     },
     "ServerScriptService": {
@@ -27,36 +32,805 @@
         "$className": "Part",
         "$properties": {
           "Anchored": true,
-          "Color": [
-            0.38823,
-            0.37254,
-            0.38823
-          ],
+          "Color": [0.357, 0.604, 0.298],
           "Locked": true,
-          "Position": [
-            0,
-            -10,
-            0
-          ],
-          "Size": [
-            512,
-            20,
-            512
-          ]
+          "Position": [0, -10, 0],
+          "Size": [512, 20, 512]
+        }
+      },
+      "PlazaFloor": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.72, 0.76, 0.86],
+          "Position": [0, 0.5, 0],
+          "Size": [100, 1, 60]
+        }
+      },
+      "ConveyorSegment1": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.25, 0.3],
+          "Position": [-40.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment2": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.9, 0.5, 0.15],
+          "Position": [-31.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment3": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.25, 0.3],
+          "Position": [-22.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment4": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.9, 0.5, 0.15],
+          "Position": [-13.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment5": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.25, 0.3],
+          "Position": [-4.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment6": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.9, 0.5, 0.15],
+          "Position": [4.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment7": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.25, 0.3],
+          "Position": [13.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment8": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.9, 0.5, 0.15],
+          "Position": [22.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment9": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.25, 0.3],
+          "Position": [31.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorSegment10": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.9, 0.5, 0.15],
+          "Position": [40.5, 1.5, 10],
+          "Size": [9, 1, 6]
+        }
+      },
+      "ConveyorRailNorth": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.95, 0.8, 0.1],
+          "Position": [0, 2.2, 6.5],
+          "Size": [90, 1, 1]
+        }
+      },
+      "ConveyorRailSouth": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.95, 0.8, 0.1],
+          "Position": [0, 2.2, 13.5],
+          "Size": [90, 1, 1]
+        }
+      },
+      "Base1Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.921, 0.314, 0.314],
+          "Position": [-70, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base1BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-70, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base1SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-77.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base1SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-62.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base1Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [0.921, 0.314, 0.314],
+          "Position": [-70, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base2Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.588, 0.196],
+          "Position": [-50, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base2BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-50, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base2SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-57.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base2SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-42.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base2Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [1, 0.588, 0.196],
+          "Position": [-50, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base3Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.863, 0.235],
+          "Position": [-30, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base3BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-30, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base3SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-37.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base3SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-22.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base3Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [1, 0.863, 0.235],
+          "Position": [-30, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base4Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.431, 0.784, 0.353],
+          "Position": [-10, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base4BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-10, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base4SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-17.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base4SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [-2.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base4Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [0.431, 0.784, 0.353],
+          "Position": [-10, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base5Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.314, 0.706, 0.863],
+          "Position": [10, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base5BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [10, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base5SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [2.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base5SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [17.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base5Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [0.314, 0.706, 0.863],
+          "Position": [10, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base6Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.471, 0.431, 0.922],
+          "Position": [30, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base6BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [30, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base6SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [22.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base6SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [37.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base6Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [0.471, 0.431, 0.922],
+          "Position": [30, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base7Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.784, 0.353, 0.863],
+          "Position": [50, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base7BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [50, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base7SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [42.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base7SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [57.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base7Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [0.784, 0.353, 0.863],
+          "Position": [50, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "Base8Pad": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.471, 0.706],
+          "Position": [70, 1, -35],
+          "Size": [16, 2, 14]
+        }
+      },
+      "Base8BackWall": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [70, 3, -41.5],
+          "Size": [16, 6, 1]
+        }
+      },
+      "Base8SideWallL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [62.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base8SideWallR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.85],
+          "Position": [77.5, 3, -35],
+          "Size": [1, 6, 14]
+        }
+      },
+      "Base8Gate": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "CanCollide": false,
+          "Color": [1, 0.471, 0.706],
+          "Position": [70, 2.5, -28.5],
+          "Size": [16, 5, 1],
+          "Transparency": 0.4
+        }
+      },
+      "SpawnPlatform": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.85, 0.85, 0.9],
+          "Position": [0, 0.5, 38],
+          "Size": [20, 1, 10]
+        }
+      },
+      "SpawnLocation": {
+        "$className": "SpawnLocation",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.8, 0.3],
+          "Neutral": true,
+          "Position": [0, 1, 38],
+          "Size": [6, 1, 6]
+        }
+      },
+      "SignPostL": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.2, 0.25],
+          "Position": [-11, 4, -48],
+          "Size": [1, 8, 1]
+        }
+      },
+      "SignPostR": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.2, 0.25],
+          "Position": [11, 4, -48],
+          "Size": [1, 8, 1]
+        }
+      },
+      "WelcomeSign": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.15, 0.2, 0.35],
+          "Position": [0, 8, -48],
+          "Size": [24, 6, 1]
+        },
+        "SignGui": {
+          "$className": "SurfaceGui",
+          "$properties": {
+            "Face": "Front"
+          },
+          "SignText": {
+            "$className": "TextLabel",
+            "$properties": {
+              "BackgroundTransparency": 1,
+              "Font": "SourceSansBold",
+              "Text": "BRAINROT BASE RUSH",
+              "TextColor3": [1, 0.85, 0.2],
+              "TextScaled": true
+            }
+          }
+        }
+      },
+      "Tree1Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [-60, 3, 25],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree1Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [-60, 8, 25],
+          "Shape": "Ball",
+          "Size": [8, 8, 8]
+        }
+      },
+      "Tree2Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [60, 3, 25],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree2Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [60, 8, 25],
+          "Shape": "Ball",
+          "Size": [8, 8, 8]
+        }
+      },
+      "Tree3Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [-85, 3, -10],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree3Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [-85, 8, -10],
+          "Shape": "Ball",
+          "Size": [8, 8, 8]
+        }
+      },
+      "Tree4Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [85, 3, -10],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree4Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [85, 8, -10],
+          "Shape": "Ball",
+          "Size": [8, 8, 8]
+        }
+      },
+      "Tree5Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [-85, 3, 25],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree5Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [-85, 8, 25],
+          "Shape": "Ball",
+          "Size": [8, 8, 8]
+        }
+      },
+      "Tree6Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [85, 3, 25],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree6Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [85, 8, 25],
+          "Shape": "Ball",
+          "Size": [8, 8, 8]
+        }
+      },
+      "Tree7Trunk": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.45, 0.3, 0.15],
+          "Position": [0, 3, 42],
+          "Size": [2, 6, 2]
+        }
+      },
+      "Tree7Leaves": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.25, 0.6, 0.25],
+          "Position": [0, 8, 42],
+          "Shape": "Ball",
+          "Size": [7, 7, 7]
+        }
+      },
+      "Lamp1Pole": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.2, 0.25],
+          "Position": [-45, 4, -20],
+          "Size": [1, 8, 1]
+        }
+      },
+      "Lamp1Light": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.9, 0.4],
+          "Position": [-45, 8.5, -20],
+          "Shape": "Ball",
+          "Size": [3, 3, 3]
+        }
+      },
+      "Lamp2Pole": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.2, 0.25],
+          "Position": [45, 4, -20],
+          "Size": [1, 8, 1]
+        }
+      },
+      "Lamp2Light": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.9, 0.4],
+          "Position": [45, 8.5, -20],
+          "Shape": "Ball",
+          "Size": [3, 3, 3]
+        }
+      },
+      "Lamp3Pole": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.2, 0.25],
+          "Position": [-45, 4, 28],
+          "Size": [1, 8, 1]
+        }
+      },
+      "Lamp3Light": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.9, 0.4],
+          "Position": [-45, 8.5, 28],
+          "Shape": "Ball",
+          "Size": [3, 3, 3]
+        }
+      },
+      "Lamp4Pole": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.2, 0.25],
+          "Position": [45, 4, 28],
+          "Size": [1, 8, 1]
+        }
+      },
+      "Lamp4Light": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [1, 0.9, 0.4],
+          "Position": [45, 8.5, 28],
+          "Shape": "Ball",
+          "Size": [3, 3, 3]
+        }
+      },
+      "FountainBase": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.6, 0.65, 0.75],
+          "Position": [0, 1, -18],
+          "Size": [10, 2, 10]
+        }
+      },
+      "FountainWater": {
+        "$className": "Part",
+        "$properties": {
+          "Anchored": true,
+          "Color": [0.2, 0.6, 1],
+          "Position": [0, 2, -18],
+          "Size": [8, 1, 8],
+          "Transparency": 0.3
         }
       }
     },
     "Lighting": {
       "$properties": {
-        "Ambient": [
-          0,
-          0,
-          0
-        ],
-        "Brightness": 2,
+        "Ambient": [0.35, 0.35, 0.4],
+        "Brightness": 3,
+        "ClockTime": 14,
         "GlobalShadows": true,
+        "OutdoorAmbient": [0.7, 0.7, 0.75],
         "Outlines": false,
-        "Technology": "Voxel"
+        "Technology": "ShadowMap"
       }
     },
     "SoundService": {

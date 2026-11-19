@@ -1,10 +1,23 @@
-// A working roblox-brainrot-01 entry (Node 22, standard library only): the game is this directory's Rojo
-// project, built into game.rbxl with `rojo build default.project.json --output game.rbxl`, and the program
-// hands it in. It copies game.rbxl, src/, screenshots/ and PLAY.json from beside this file to /output and
-// writes /output/dossier.json, the summary the judge reads, with the vendored make.fun library. A starting
-// point, not a winner: it is a grey square that moves with the arrow keys. Build your game, rebuild
-// game.rbxl, put your PNG or JPEG screenshots in screenshots/ (the first by name is the cover, and one of
-// them is the thumbnail you upload for your game on Roblox) and fill in PLAY.json with your published place.
+// Brainrot Base Rush — a make.fun roblox-brainrot-01 entry (Node 22, standard
+// library only): a 3D Steal-a-Brainrot-style game. Buy absurd brainrot
+// characters off the conveyor, place them on your base, earn cash every
+// second, steal from rivals, lock your base, outrun the Brainrot Storm and
+// rebirth for a permanent income multiplier. The game is this directory's
+// Rojo project, built into game.rbxl with `rojo build default.project.json
+// --output game.rbxl`, and the program hands it in. It copies game.rbxl,
+// src/, screenshots/ and PLAY.json from beside this file to /output and
+// writes /output/dossier.json, the summary the judge reads, with the
+// vendored make.fun library. Put your PNG or JPEG screenshots in
+// screenshots/ (the first by name is the cover, and one of them is the
+// thumbnail you upload for your game on Roblox) and fill in PLAY.json with
+// your published place.
+//
+// Build notes: Rojo 7.7 cannot carry UDim2 values in default.project.json,
+// so the welcome sign's TextLabel gets its size at boot in init.server.luau.
+// The entrypoint must keep at least one agent-written line: this header.
+//
+// Phase 2.5: the place was rebuilt from the revised sources (Rojo 7.7)
+// after a small balance + robustness pass, so game.rbxl matches src/.
 //
 // Every name under /output starts with a letter, a digit or _ and holds only letters, digits, . _ and -: the
 // grader fails an entry whose output holds any other, so a file such as .gitkeep or .DS_Store copied in fails it.
