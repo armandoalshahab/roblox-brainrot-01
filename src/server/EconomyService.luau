@@ -39,9 +39,14 @@ function EconomyService.buyBrainrotFromConveyor(player, modelId)
 	local record = StateService.getModel(modelId)
 	local data = StateService.getData(player)
 	if not record or not data then
+		-- Visible on purpose: a silent false here used to look exactly like
+		-- "buy is broken" with no clue whether the record, the player data,
+		-- or the remote was the problem.
+		notify(player, "Brainrot tidak ditemukan, coba lagi.", "error", nil)
 		return false
 	end
 	if record.State ~= "conveyor" then
+		notify(player, "Brainrot ini sudah tidak di conveyor.", "error", nil)
 		return false
 	end
 	if data.Cash < record.Price then
@@ -59,6 +64,7 @@ function EconomyService.buyBrainrotFromConveyor(player, modelId)
 		-- Extremely rare (two buyers racing): put it back on the belt.
 		data.Cash = data.Cash + record.Price
 		SpawnerService.ConveyorModels[modelId] = record
+		notify(player, "Gagal menaruh di base, coba lagi.", "error", nil)
 		return false
 	end
 	local char = BrainrotData.getCharacter(record.CharId)
