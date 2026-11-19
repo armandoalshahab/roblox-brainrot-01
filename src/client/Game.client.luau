@@ -1,88 +1,165 @@
--- A square that moves with the arrow keys inside a grey box.
+-- Game.client: the client boot. Binds E (buy / steal / slap, whichever is
+-- nearest) and L (lock your base) through ContextActionService, scans for the
+-- nearest interactable brainrot, and wires every server event to the UI.
 
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ContextActionService = game:GetService("ContextActionService")
 local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
+
+local BrainrotData = require(ReplicatedStorage.Shared.BrainrotData)
 
 local player = Players.LocalPlayer
+local ClientUI = require(script.Parent.ClientUI)
+local ClientEffects = require(script.Parent.ClientEffects)
 
-local ARENA_WIDTH = 640
-local ARENA_HEIGHT = 480
-local SQUARE_SIZE = 48
-local SPEED = 320 -- pixels per second
+local BuyBrainrot = ReplicatedStorage:WaitForChild("BuyBrainrot")
+local StealBrainrot = ReplicatedStorage:WaitForChild("StealBrainrot")
+local SlapPlayer = ReplicatedStorage:WaitForChild("SlapPlayer")
+local LockBase = ReplicatedStorage:WaitForChild("LockBase")
+local BuyUpgrade = ReplicatedStorage:WaitForChild("BuyUpgrade")
+local Rebirth = ReplicatedStorage:WaitForChild("Rebirth")
+local UpdateHUD = ReplicatedStorage:WaitForChild("UpdateHUD")
+local Notify = ReplicatedStorage:WaitForChild("Notify")
+local StormWarning = ReplicatedStorage:WaitForChild("StormWarning")
+local LeaderboardUpdate = ReplicatedStorage:WaitForChild("LeaderboardUpdate")
 
-local gui = Instance.new("ScreenGui")
-gui.Name = "GameGui"
-gui.ResetOnSpawn = false
-gui.IgnoreGuiInset = true
+local currentTarget = nil -- {Kind = "buy"|"steal"|"slap", ModelId, TargetPlayer, Label}
 
-local background = Instance.new("Frame")
-background.Name = "Background"
-background.Size = UDim2.fromScale(1, 1)
-background.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-background.BorderSizePixel = 0
-background.Parent = gui
-
-local title = Instance.new("TextLabel")
-title.Name = "Hint"
-title.AnchorPoint = Vector2.new(0.5, 0)
-title.Position = UDim2.new(0.5, 0, 0.5, -ARENA_HEIGHT / 2 - 56)
-title.Size = UDim2.fromOffset(ARENA_WIDTH, 40)
-title.BackgroundTransparency = 1
-title.Text = "Use the arrow keys to move the square"
-title.TextColor3 = Color3.fromRGB(230, 230, 230)
-title.TextSize = 24
-title.Font = Enum.Font.SourceSans
-title.Parent = background
-
-local arena = Instance.new("Frame")
-arena.Name = "Arena"
-arena.AnchorPoint = Vector2.new(0.5, 0.5)
-arena.Position = UDim2.fromScale(0.5, 0.5)
-arena.Size = UDim2.fromOffset(ARENA_WIDTH, ARENA_HEIGHT)
-arena.BackgroundColor3 = Color3.fromRGB(110, 110, 110)
-arena.BorderColor3 = Color3.fromRGB(30, 30, 30)
-arena.BorderSizePixel = 2
-arena.Parent = background
-
-local square = Instance.new("Frame")
-square.Name = "Square"
-square.Size = UDim2.fromOffset(SQUARE_SIZE, SQUARE_SIZE)
-square.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-square.BorderColor3 = Color3.fromRGB(30, 30, 30)
-square.BorderSizePixel = 2
-square.Parent = arena
-
--- The square's top-left corner inside the arena, starting in the middle.
-local x = (ARENA_WIDTH - SQUARE_SIZE) / 2
-local y = (ARENA_HEIGHT - SQUARE_SIZE) / 2
-
-local function place()
-	square.Position = UDim2.fromOffset(math.floor(x + 0.5), math.floor(y + 0.5))
+local function getRoot()
+	local character = player.Character
+	if not character then
+		return nil
+	end
+	return character:FindFirstChild("HumanoidRootPart")
 end
 
-place()
-gui.Parent = player:WaitForChild("PlayerGui")
+-- Find the nearest thing E can do: buy from the conveyor, steal from a
+-- rival base, or slap the thief carrying your brainrot.
+local function findNearestInteractable()
+	local root = getRoot()
+	if not root then
+		return nil
+	end
+	local folder = workspace:FindFirstChild("BrainrotModels")
+	if not folder then
+		return nil
+	end
+	local best = nil
+	local bestDistance = 13
+	local slap = nil
+	local slapDistance = 9
+	for _, model in ipairs(folder:GetChildren()) do
+		if model:IsA("Model") and model.PrimaryPart then
+			local state = model:GetAttribute("State")
+			local distance = (model.PrimaryPart.Position - root.Position).Magnitude
+			if state == "conveyor" and distance < bestDistance then
+				local price = model:GetAttribute("Price") or 0
+				local charId = model:GetAttribute("CharId") or ""
+				local char = BrainrotData.getCharacter(charId)
+				local displayName = char and char.Name or charId
+				best = { Kind = "buy", ModelId = model:GetAttribute("BrainrotId"), CharId = charId, Price = price }
+				best.Label = "[E] Beli " .. displayName .. " - $" .. tostring(price)
+				bestDistance = distance
+			elseif state == "base" and distance < bestDistance then
+				local owner = model:GetAttribute("Owner") or 0
+				if owner ~= 0 and owner ~= player.UserId then
+					best = { Kind = "steal", ModelId = model:GetAttribute("BrainrotId") }
+					best.Label = "[E] CURI brainrot ini!"
+					bestDistance = distance
+				end
+			elseif state == "carried" and distance < slapDistance then
+				local owner = model:GetAttribute("Owner") or 0
+				local carrier = model:GetAttribute("Carrier") or 0
+				if owner == player.UserId and carrier ~= 0 and carrier ~= player.UserId then
+					local target = Players:GetPlayerByUserId(carrier)
+					if target then
+						slap = { Kind = "slap", TargetPlayer = target, ModelId = model:GetAttribute("BrainrotId") }
+						slap.Label = "[E] TAMPAR pencuri!"
+						slapDistance = distance
+					end
+				end
+			end
+		end
+	end
+	if slap then
+		return slap
+	end
+	return best
+end
 
-RunService.RenderStepped:Connect(function(dt)
-	local dx = 0
-	local dy = 0
-	if UserInputService:IsKeyDown(Enum.KeyCode.Left) then
-		dx -= 1
-	end
-	if UserInputService:IsKeyDown(Enum.KeyCode.Right) then
-		dx += 1
-	end
-	if UserInputService:IsKeyDown(Enum.KeyCode.Up) then
-		dy -= 1
-	end
-	if UserInputService:IsKeyDown(Enum.KeyCode.Down) then
-		dy += 1
-	end
-	if dx == 0 and dy == 0 then
+local function doInteract()
+	local target = currentTarget or findNearestInteractable()
+	if not target then
 		return
 	end
-	x = math.clamp(x + dx * SPEED * dt, 0, ARENA_WIDTH - SQUARE_SIZE)
-	y = math.clamp(y + dy * SPEED * dt, 0, ARENA_HEIGHT - SQUARE_SIZE)
-	place()
+	if target.Kind == "buy" then
+		BuyBrainrot:FireServer(target.ModelId)
+	elseif target.Kind == "steal" then
+		StealBrainrot:FireServer(target.ModelId)
+	elseif target.Kind == "slap" then
+		SlapPlayer:FireServer(target.TargetPlayer)
+	end
+end
+
+local function onInteract(_action, state, _input)
+	if state == Enum.UserInputState.Begin then
+		doInteract()
+	end
+	return Enum.ContextActionResult.Sink
+end
+
+local function onLock(_action, state, _input)
+	if state == Enum.UserInputState.Begin then
+		LockBase:FireServer()
+	end
+	return Enum.ContextActionResult.Sink
+end
+
+ContextActionService:BindAction("BrainrotInteract", onInteract, false, Enum.KeyCode.E)
+ContextActionService:BindAction("BrainrotLockBase", onLock, false, Enum.KeyCode.L)
+
+ClientUI.setInteractCallback(doInteract)
+ClientUI.setLockCallback(function()
+	LockBase:FireServer()
+end)
+ClientUI.setUpgradeCallback(function(upgradeId)
+	BuyUpgrade:FireServer(upgradeId)
+end)
+ClientUI.setRebirthCallback(function()
+	Rebirth:FireServer()
+end)
+
+UpdateHUD.OnClientEvent:Connect(function(data)
+	ClientUI.updateHUD(data)
+end)
+
+Notify.OnClientEvent:Connect(function(message, kind, position)
+	ClientUI.showToast(message, kind)
+	if kind == "buy" or kind == "steal" then
+		if position then
+			ClientEffects.playBuyBurst(position)
+		end
+	elseif kind == "rebirth" then
+		ClientEffects.pulseCash()
+	end
+end)
+
+StormWarning.OnClientEvent:Connect(function(seconds)
+	ClientEffects.showStormWarning(seconds)
+	ClientUI.showToast("BRAINROT STORM! Lari ke base!", "storm")
+end)
+
+LeaderboardUpdate.OnClientEvent:Connect(function(rows)
+	ClientUI.updateLeaderboard(rows)
+end)
+
+-- Refresh the hint label a few times a second.
+RunService.RenderStepped:Connect(function()
+	currentTarget = findNearestInteractable()
+	if currentTarget then
+		ClientUI.setHint(currentTarget.Label)
+	else
+		ClientUI.setHint("[E] Beli / Curi  -  [L] Kunci Base  -  Conveyor di selatan, base kamu di utara!")
+	end
 end)
