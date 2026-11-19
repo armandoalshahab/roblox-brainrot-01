@@ -7,7 +7,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ContextActionService = game:GetService("ContextActionService")
 local RunService = game:GetService("RunService")
 
-local BrainrotData = require(ReplicatedStorage.Shared.BrainrotData)
+-- Wait for Shared to replicate before requiring from it: a LocalScript can
+-- start before ReplicatedStorage finishes replicating, and indexing a
+-- missing child would kill this whole client script (no E key, no HUD).
+local Shared = ReplicatedStorage:WaitForChild("Shared")
+local BrainrotData = require(Shared.BrainrotData)
 
 local player = Players.LocalPlayer
 local ClientUI = require(script.Parent.ClientUI)
